@@ -208,7 +208,7 @@ The name of the variables is asigned following this rule:
  
 LL: lower left  
  LR: lower right  
- UR: upper right
+ UR: upper right  
  UL: upper left
 ### Proofs of correctness
 It isn't provided any proof of the correctness of any algorithm although they are not obviously correct. If you don`t believe it, try some difficult cases, but keep in mind the ones that are provided are quite general and difficult.
