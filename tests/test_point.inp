@@ -1,0 +1,74 @@
+add_point A 1 5
+add_point B -3 -1
+add_point C 2 -2
+add_point D 6 10
+add_point E -10 1
+add_point O 0 0
+add_point F 4 0
+add_point G 0 -3
+
+^ A B
+^ A C
+^ A O
+^ B A
+^ C A
+
+* E D
+* D E
+
++ A C
+- B D
+
+clockwise A C
+clockwise C A
+clockwise B E
+clockwise D E
+
+quadrant A
+quadrant B
+quadrant C
+quadrant D
+quadrant E
+quadrant O
+
+slope A
+slope B
+slope C
+slope D
+slope E
+slope F
+slope G
+slope O
+
+quad A
+quad B
+quad C
+quad D
+quad E
+quad F
+quad G
+quad O
+
+X A
++= A B
+X A
+X F
+-= F C
+X F
+Y E
++= E D
+Y E
+
+assign C B
++ O C
++ O B
+
+== A B
+== C B
+== B C
+== O A
+
+*= D 0.34
+*= F 0.15
+
+distance D F
