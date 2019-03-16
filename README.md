@@ -43,37 +43,32 @@ The information provided is divided into five sections:
 ### Public Methods and Operators
 * **Intersection**: Represented by *. Returns the intersection of two convex polygons.
   - Cost: O(n log(m))
-  - Algorithm
-
-   For each side compute the cross points of the other polygon with the line it represents.
-   Then, from the cross points and the vertices select the two that are contained by the other two.
+  - Algorithm  
+   For each side compute the cross points of the other polygon with the line it represents.  
+   Then, from the cross points and the vertices select the two that are contained by the other two.  
    Finally, add all the points created in this process.
 * **Union**: Represented by +. Returns the convex union of two convex polygons.
   - Cost: O((m+n)log(m+n))
-  - Algorithm
-
+  - Algorithm  
    Just call the constructor of the class with all the points.
 * **Bounding Box(bbox)**: Returns a rectangle (convex polygon) that contains all the given convex polygons.
   - Cost: O(n)
   - Algorithm
-
-   Compute the minimum and maximum x-y coordinates.
+   Compute the minimum and maximum x-y coordinates.  
    From them create the LL, LR, UR, UL corners.
    Finally, call the constructor with those four points.
 * **isInside**: Tells if a convex polygon is inside another.
   - Cost: O(n log(m))
-  - Algorithm
-
+  - Algorithm  
    For each point check if it is inside the polygon. If one point is not inside the program ends.
 * **num_vert**: Returns the number of vertices.
 * **num_edges**: Returns the number of edges.
 * **area / perimeter / centroid**: Returns the area / perimeter / centroid.
 * **isRegular**: Tells if a polygon is regular.
   - Cost: O(n)
-  - Algorithm
-
-   First, check if all the edges are equal.  
-   Then, if all the angles are the same.
+  - Algorithm  
+   First, check if all the edges are equal.   
+   Then, if all the angles are the same.  
    Everything is done with a tolerance of 1%, which means that two magnitudes are equal if they differ in less than 1% of its magnitude.
 
 
