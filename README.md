@@ -8,4 +8,4 @@ The information provided is divided into five sections:
 5. Compilation
 
 ##### 1. Class Point
-It supplies all the operations one would encounter for points, but also for vectors. Each operation can be interpreted as done to the point P or the vector $$\inline OP$$.
+It supplies all the operations one would encounter for points, but also for vectors. Each operation can be interpreted as done to the point P or the vector \[OP\].
