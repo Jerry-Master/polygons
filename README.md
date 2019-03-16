@@ -6,8 +6,9 @@ The information provided is divided into five sections:
 2. Class ConvexPolygon
 3. Polygon_Calculator
 4. Tests
-5. Compilation / Makefile
-6. Additional notes and clarifications
+5. Compilation
+6. Makefile
+7. Additional notes and clarifications
 ***
 ## 1. Class Point
 
@@ -159,7 +160,7 @@ The Makefile provides some commands for checking some concrete features of the c
 
 For more details of this and other commands to check either the functionality or the efficiency, read the README.md in the folder `tests`.
 ***
-## 5. Compilation / Makefile
+## 5. Compilation
 The command `make compile` will do all the work. 
 ### Know errors and fixes
 > `Polygon_Calculator.cc:8:10: fatal error: 'pngwriter.h' file not found`
@@ -174,13 +175,47 @@ If this or something similar shows up, it is because either you haven`t installe
 If they already are like that, try to find the directory in which PNGwriter is installed, to do so, you can execute the following command in bash:
 > `find / -name pngwriter.h 2>/dev/null`
 
-It is going to last a few minutes, because it is looking in all your directories. Whenever a directory is printed like, for example: `/Users/087024/libs/include/pngwriter.h` you can interrupt the process by doing `ctrl+c`. Now change the flags to include the above without the `pngwriter.h`
+It is going to last a few minutes, because it is looking in all your directories. Whenever a directory is printed like, for example: `/Users/087024/libs/include/pngwriter.h` you can interrupt the process by doing `ctrl+c`. Now change the flags to include the above knowing the directory in which everything is installed in `/Users/087024/libs/` (example):
 >`CXXFLAGS = -Wall -std=c++11 -O2 -DNO_FREETYPE -I` _`/Users/087024/libs/include/`_
 > 
->`LIBS =  -L` _`/Users/087024/libs/include/`_ `-l PNGwriter -l png`
+>`LIBS =  -L` _`/Users/087024/libs/lib/`_ `-l PNGwriter -l png`
 
-The cursive letters are where you have to put the new path you founded.
+The cursive letters are where you have to put the new path you found. Adding `include` or `lib`.  
+If none of this worked, reinstall the package PNGwriter in the folder `$HOME/libs` and leave the flags as they were in the beginning.
 
 If you don't have PNGwriter installed, Jordi Petit has a fantastic tutorial in his [github](https://github.com/jordi-petit/ap2-imatges).
 ***
-## 6. Additional notes and Clarifications
+## 6. Makefile
+The command `make` shows all the available commands, which are:
+* **compile**: Compiles the class Point, ConvexPolygon, and the Polygon_Calculator
+* **use**: Executes the Polygon_Calculator.exe program
+* **test**: Check the Polygon_Calculator with some test cases 
+* **test_time**: Shows the time it needs to execute each method for different sizes.
+* **test_point**: Check the class Point. For more detail go to the README.md in the folder tests.
+* **test_conv**: Check the class ConvexPolygon. For more detail go to the README.md in the folder tests.
+* **open_point**: Opens the files of the tests of the class Point. Only valid for visual Studio Code.
+* **open_conv**: Opens the files of the tests of the class ConvexPolygon. Only valid for visual Studio Code.
+* **open**: Opens the files of the tests of the Polygon_Calculator. Only valid for visual Studio Code.
+* **clean**: Removes all the .o, .exe, and .out files.
+***
+## 7. Additional notes and Clarifications
+### Why the clockwise() method seems counterclockwise?
+Because this is the way things should be. Having our clocks move in the negative sense of rotation while the times moves forward is absurd. But, the occidental culture is built upon history, not science and math. That is why you think my function clockwise has the wrong name. To support that this view is not unique, follow this [link](https://www.bbc.com/mundo/noticias/2014/06/140625_bolivia_nuevo_reloj_izquierda_men).
+### Asymptotical notation
+The name of the variables is asigned following this rule:  
+
+ `n` is associated to the number of vertices of the first polygon, and `m` to the second.
+### Proofs of correctness
+It won't provided any proof of the correctness of any algorithm although one of them is not obviously correct. If you don`t believe it, try some difficult cases, but keep in mind the ones that are provided are quite general and difficult.
+### Text format
+The function `load`, only accepts .txt, .inp, or .dat files, but it can be modified to accept any kind of file.
+### Tips for reading the Code
+Start from the bottom. The code is written in a way that explains himself(almost). 
+
+When reading an algorithm, first read the comments and then check the program does what it says. 
+
+Remember this notation: T stand for polygons or vectors of points; P, Q and other uppercase letters stand for points.
+
+The static functions are placed immediately above of where they are used. Or if they are used by many other functions they are at the top.
+
+Min/Max functions are copy-paste of the first one, so there is no need to read in detail each of one. Disgracefully, there are many function along the code that exhibits this feature, but couldn't do better because although they are very similar, I didn't find a way to encapsulate them even more.
