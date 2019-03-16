@@ -43,7 +43,7 @@ class Point{
         double operator* (const Point& P) const; // Dot
         bool operator== (const Point& P) const;
         // Taking the origin as reference
-        // True: P1^P2 > 0
+        // True: P1^P2 >= 0
         // False: P1^P2 < 0
         // Prec: Neither P1 nor P2 are the origin
         bool clockwise (const Point& P1, const Point& P2) const;
