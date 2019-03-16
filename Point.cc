@@ -79,7 +79,7 @@ bool Point::operator== (const Point& P) const{
     return x == P.X() and y == P.Y();
 }
 bool Point::clockwise (const Point& P1, const Point& P2) const{
-    return (P1 ^ P2) >= 0;
+    return (P1 ^ P2) > 0;
 }
 bool Point::clockwise (const Point& P) const{
     return clockwise(*this, P) > 0;
