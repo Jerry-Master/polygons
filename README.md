@@ -6,8 +6,8 @@ The information provided is divided into five sections:
 2. Class ConvexPolygon
 3. Polygon_Calculator
 4. Tests
-5. Compilation
-6. Additional notes and aclarations
+5. Compilation / Makefile
+6. Additional notes and clarifications
 ***
 ## 1. Class Point
 
@@ -61,7 +61,7 @@ The information provided is divided into five sections:
    Just call the constructor of the class with all the points.
 * **Bounding Box(bbox)**: Returns a rectangle (convex polygon) that contains all the given convex polygons.
   - Cost: `O(n)`
-  - Algorithm
+  - Algorithm  
    Compute the minimum and maximum x-y coordinates.  
    From them create the LL, LR, UR, UL corners.
    Finally, call the constructor with those four points.
@@ -123,4 +123,64 @@ All the above is done using this functions:
     
     Inductive step: Let `m = (i+j)/2`, then either call the function between `[i..m]` or between `[m..j]`. Following a different criteria for each case:
     1. `T[i]` is in a different side of the line than `T[j]`, then `T[m]` is either in the same side as `T[i]` or as `T[j]`, therefore choose the one in the different side.
-    2. Both `T[i]` and `T[j]` are in the same side. If `T[m]` is in another side, both `[i..m]` and `[m..j]` are valid. Else, look at `T[m-1]` and `T[m+1]` to see in which way you are getting closer to the line and choose that way.
+    2. Both `T[i]` and `T[j]` are in the same side. If `T[m]` is in another side, both `[i..m]`   and `[m..j]`  are valid. Else, look at `T[m-1]` and `T[m+1]` to see in which way you are getting closer to the line and choose that way.
+***
+## 3. Polygon Calculator
+
+This are the ones given by [Jordi Petit](https://github.com/jordi-petit/ap2-poligons-2019), but they are listed again for clarification:
+> `polygon` `print` `save` `load` `list`
+> 
+> `area` `perimeter` `vertices` `centroid` 
+> 
+> `setcol` `draw`
+> 
+> `intersection` `union` `inside` `bbox`
+
+### Error handling
+The possible errors are encoded with a number from 0 to 4. If one appears, something has gone wrong and isn't working as you would expect, the command won't terminate but maybe it will have done something you don't really want, so it is adviceable to restart the calculator.
+0. Wrong number or type of arguments
+1. Invalid polygon identifier
+2. Not enough parameters
+3. Invalid command
+4. Wrong format  
+
+There are also two warnings, but are rarely used. If one appears, you can ignore them freely.
+0. Not enough parameters
+1. Nothing to show 
+
+Known bugs:
+* The function `polygon`, won't give any error when one of the x-coordinates is not convertible to double, but it will add to the polygon the points mentioned before it. 
+
+### Advice
+The commands `save` and `draw`, will overwrite the given files. **Don't overwrite any source code or needed image.**
+***
+## 4. Tests
+The Makefile provides some commands for checking some concrete features of the classes. For example, `make test_point` and `make test_conv` will check the methods for each class are well implemented. If they are, no output from those commands should be expected. If you want to use this commands to check your own tests, you'll need to modify the format of your tests. 
+
+For more details of this and other commands to check either the functionality or the efficiency, read the README.md in the folder `tests`.
+***
+## 5. Compilation / Makefile
+The command `make compile` will do all the work. 
+### Know errors and fixes
+> `Polygon_Calculator.cc:8:10: fatal error: 'pngwriter.h' file not found`
+> 
+> `#include <pngwriter.h>`  
+
+If this or something similar shows up, it is because either you haven`t installed the library PNGwriter, or you have it installed in another place. If you have installed it, but don't remember where, do the following to fix the problem. First, check the flags for the compiler are the correct ones:
+> `CXXFLAGS = -Wall -std=c++11 -O2 -DNO_FREETYPE -I $(HOME)/libs/include`
+> 
+>`LIBS =  -L $(HOME)/libs/lib -l PNGwriter -l png`
+
+If they already are like that, try to find the directory in which PNGwriter is installed, to do so, you can execute the following command in bash:
+> `find / -name pngwriter.h 2>/dev/null`
+
+It is going to last a few minutes, because it is looking in all your directories. Whenever a directory is printed like, for example: `/Users/087024/libs/include/pngwriter.h` you can interrupt the process by doing `ctrl+c`. Now change the flags to include the above without the `pngwriter.h`
+>`CXXFLAGS = -Wall -std=c++11 -O2 -DNO_FREETYPE -I` _`/Users/087024/libs/include/`_
+> 
+>`LIBS =  -L` _`/Users/087024/libs/include/`_ `-l PNGwriter -l png`
+
+The cursive letters are where you have to put the new path you founded.
+
+If you don't have PNGwriter installed, Jordi Petit has a fantastic tutorial in his [github](https://github.com/jordi-petit/ap2-imatges).
+***
+## 6. Additional notes and Clarifications
