@@ -12,7 +12,7 @@ using namespace std;
 
 using segment = vector<Point>;
 
-map<string, ConvexPolygon> pols; // Polygons
+map<string, ConvexPolygon> pols; // Polygons 
 istringstream iss;
 int num_bbox = 0;
 
@@ -121,8 +121,7 @@ void intersection(){
     }
     cout << "ok" << endl;
 }
-// It saves the bounding box with the name 'BoundingBox#' where # represents how many bbox 
-// have been created
+// It saves the bounding box with the name given
 void bbox(){
     string name_box;
     if(not(iss >> name_box)){
@@ -322,17 +321,24 @@ segment line(const Point& P, const Point& Q){
     double C = -(A*P.X() + B*P.Y());
     // Enclose the line between P and Q
 	segment ret;
+    // Special cases
 	if (A == 0 and B == 0) return {Point(0,0)};
 	if (A == 0) {
 		for (int x = P.X(); x <= Q.X(); x++) ret.push_back(Point(x,(-C/B)));
 	}else if (B == 0) {
 		for (int y = min(P.Y(), Q.Y()); y <= max(P.Y(), Q.Y()); y++) ret.push_back(Point((-C/A),y));
-	}else {
-		int y;
-		for (int x = P.X(); x <= Q.X(); x++){
-			y = (-A/B)*x - (C/B); 
-			ret.push_back(Point(x, y));
+	}else { // General case
+		int this_y;
+        int last_y = (-A/B)*P.X() - (C/B);
+        // Traverse the points in the line
+		for (int x = P.X()+1; x <= Q.X(); x++){
+			this_y = (-A/B)*x - (C/B); 
+            // Fill between consecutive x all the points in between the y-coordinates
+            for (int yy = min(this_y, last_y); yy <= max(this_y, last_y); yy++) ret.push_back(Point(x, yy));
+            last_y = this_y;
 		}
+        // Fill the last pixels
+        for (int y = min(double(last_y), Q.Y()); y < max(double(last_y), Q.Y()); y++) ret.push_back(Point(Q.X()+1, y));
 	}
 	return ret;
 }
