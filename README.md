@@ -1,7 +1,7 @@
 ## AP2 PROJECT 2019
 ### Documentation
 
-The information provided is divided into five sections:
+The information provided is divided into seven sections:
 1. Class Point
 2. Class ConvexPolygon
 3. Polygon_Calculator
