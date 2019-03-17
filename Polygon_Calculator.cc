@@ -13,8 +13,9 @@ using namespace std;
 using segment = vector<Point>;
 
 map<string, ConvexPolygon> pols; // Polygons 
-istringstream iss;
-int num_bbox = 0;
+istringstream iss; // Output channel
+int WIDTH = 500;
+int HEIGHT = 500;
 
 // Tells if s is included in pols
 bool included (const string& s){
@@ -38,85 +39,56 @@ void warning(int type){
     cout << endl;
 }
 
-void add_polygon(){
+void add_polygon(bool message = true){
     string name;
-    if (not (iss >> name)) {
-        error(0); 
-        return;
-    }
+    if (not (iss >> name)) {error(0); return;}
+    // Add the points
     vector<Point> hull;
     double x, y;
     while (iss >> x) {
-        if (not (iss >> y)){
-            error(2);
-            return;
-        }
+        if (not (iss >> y)){error(2); return;}
         hull.push_back(Point(x,y));
     }
     pols[name] = hull;
-    cout << "ok" << endl;
+    if (message) cout << "ok" << endl;
 }
 // Shows all the vertices of T in order, in the form x1 y1 x2 y2  
 void print(const string& name){
-    if (not included(name)) {
-        error(1);
-        return;
-    }
+    if (not included(name)) {error(1); return;}
     cout << name;
     for (Point p : pols[name].Hull() ) cout << ' ' << p.X() << ' ' << p.Y();
     cout << endl;
 }
 void print(){
     string name;
-    if (not (iss >> name)) { 
-        error(0);
-        return;
-    }
+    if (not (iss >> name)) {error(0); return;}
     print(name);
 }
 
-// If it receives three parameters: p1, p2, p3; if p1 doesn't exists it would be created
+// If it receives three parameters: p1, p2, p3; and p1 doesn't exists it would be created
 void Union(){
     string name1, name2;
-    if (not (iss >> name1 >> name2)) {
-        error(0);
-        return;
-    }
+    if (not (iss >> name1 >> name2)) {error(0); return;}
     string name3;
     if (iss >> name3){
-        if (not included(name2) or not included(name3)) {
-            error(1);
-            return;
-        }
+        if (not included(name2) or not included(name3)) {error(1); return;}
         pols[name1] = pols[name2] + pols[name3];
     }else{
-        if (not included(name1) or not included(name2)) {
-            error(1);
-            return;
-        }
+        if (not included(name1) or not included(name2)) {error(1); return;}
         pols[name1] = pols[name1] + pols[name2];
     }
     cout << "ok" << endl;
 }
-// If it receives three parameters: p1, p2, p3; if p1 doesn't exists it would be created
+// If it receives three parameters: p1, p2, p3; and p1 doesn't exists it would be created
 void intersection(){
     string name1, name2;
-    if (not (iss >> name1 >> name2)) {
-        error(0);
-        return;
-    }
+    if (not (iss >> name1 >> name2)) {error(0); return;}
     string name3;
     if (iss >> name3){
-        if (not included(name2) or not included(name3)) {
-            error(1);
-            return;
-        }
+        if (not included(name2) or not included(name3)) {error(1); return;}
         pols[name1] = pols[name2] * pols[name3];
     }else{
-        if (not included(name1) or not included(name2)) {
-            error(1);
-            return;
-        }
+        if (not included(name1) or not included(name2)) {error(1); return;}
         pols[name1] = pols[name1] * pols[name2];
     }
     cout << "ok" << endl;
@@ -124,53 +96,33 @@ void intersection(){
 // It saves the bounding box with the name given
 void bbox(){
     string name_box;
-    if(not(iss >> name_box)){
-        error(0);
-        return;
-    }
+    if(not(iss >> name_box)){error(0); return;}
+
     bool enough_arguments = false;
     string name;
     ConvexPolygon box;
     while (iss >> name) {
         enough_arguments = true;
-        if (not included(name)) {
-            error(1);
-            return;
-        }
+        if (not included(name)) {error(1); return;}
         if (box.Hull().size() == 0) box = pols[name];
         else box = ConvexPolygon().bbox({box, pols[name]});
     }
-    if (not enough_arguments) {
-        error(2);
-        return;
-    }
+    if (not enough_arguments) {error(2); return;}
     pols[name_box] = box;
     cout << "ok" << endl;
 }
 // Tells if the first is inside the second
 void isInside(){
     string name1, name2;
-    if (not(iss >> name1 >> name2)){
-        error(0);
-        return;
-    }
-    if (not included(name1) or not included(name2)) {
-        error(1);
-        return;
-    }
+    if (not(iss >> name1 >> name2)){error(0); return;}
+    if (not included(name1) or not included(name2)) {error(1); return;}
     cout << (pols[name1].isInside(pols[name2]) ? "yes" : "no") << endl;
 }
 
 void vertices(){
     string name;
-    if (not (iss >> name)){
-        error(0);
-        return;
-    }
-    if (not included(name)) {
-        error(1);
-        return;
-    }
+    if (not (iss >> name)){error(0); return;}
+    if (not included(name)) {error(1); return;}
     cout << pols[name].num_vert() << endl;
 }
 
@@ -188,63 +140,33 @@ void list(){
 
 void area(){
     string name;
-    if (not (iss >> name)){
-        error(0);
-        return;
-    }
-    if (not included(name)) {
-        error(1);
-        return;
-    }
+    if (not (iss >> name)) {error(0); return;}
+    if (not included(name)) {error(1); return;}
     cout << pols[name].area() << endl;
 }
 
 void perimeter(){
     string name;
-    if (not (iss >> name)){
-        error(0);
-        return;
-    }
-    if (not included(name)) {
-        error(1);
-        return;
-    }
+    if (not (iss >> name)) {error(0); return;}
+    if (not included(name)) {error(1); return;}
     cout << pols[name].perimeter() << endl;
 }
 
 void centroid(){
     string name;
-    if (not (iss >> name)){
-        error(0);
-        return;
-    }
-    if (not included(name)) {
-        error(1);
-        return;
-    }
+    if (not (iss >> name)) {error(0); return;}
+    if (not included(name)) {error(1); return;}
     Point centroid = pols[name].centroid();
     cout << centroid.X() << ' ' << centroid.Y() << endl;
 }
 
 void setcol(){
     string name;
-    if (not (iss >> name)){
-        error(0);
-        return;
-    }
-    if (not included(name)) {
-        error(1);
-        return;
-    }
+    if (not (iss >> name)) {error(0); return;}
+    if (not included(name)) {error(1); return;}
     double r, g, b;
-    if (not (iss >> r >> g >> b)){
-        error(0);
-        return;
-    }
-    if (r > 1 or g > 1 or b > 1){
-        error(4);
-        return;
-    }
+    if (not (iss >> r >> g >> b)) {error(0); return;}
+    if (r > 1 or g > 1 or b > 1) {error(4); return;}
     pols[name].setcol({r,g,b});
     cout << "ok" << endl;
 }
@@ -254,27 +176,18 @@ bool wrong_format(const string& file, bool image = false){
     if (last < 3) return false;
     string tail = file.substr(last-3, 4);
     if (image) return (tail != ".png");
+    // text formats
     return not (tail == ".txt" or tail == ".inp" or tail == ".dat");
 }
 
 void save(){
     string file;
-    if (not (iss >> file)){
-        error(0);
-        return;
-    }
-    if (wrong_format(file)){
-        error(4);
-        return;
-    }
+    if (not (iss >> file)) {error(0); return;}
+    if (wrong_format(file)) {error(4); return;}
     ofstream destination(file);
     string name;
     while (iss >> name){
-        if (not included(name)) {
-            error(1);
-            destination.close();
-            return;
-        }
+        if (not included(name)) {error(1); destination.close(); return;}
         destination << name;
         vector<Point> hull = pols[name].Hull();
         for (Point p : hull) destination << ' ' << p.X() << ' ' << p.Y();
@@ -286,31 +199,15 @@ void save(){
 
 void load(){
     string file;
-    if (not (iss >> file)){
-        error(0);
-        return;
-    }
-    if (wrong_format(file)){
-        error(4);
-        return;
-    }
+    if (not (iss >> file)) {error(0); return;}
+    if (wrong_format(file)) {error(4); return;}
     ifstream arrival(file);
     string polygon;
     while(getline(arrival, polygon)) {
         iss = istringstream(polygon);
-        add_polygon();
+        add_polygon(false);
     }
     cout << "ok" << endl;
-}
-
-void adjust(Point& P, Point new_Origin, double width_to, double heigth_to, double width_from, double heigth_from){
-    // Change the origin
-    P -= new_Origin;
-    // Scale
-    double x = P.X(); double y = P.Y();
-    x *= (width_to/width_from); y *= (heigth_to/heigth_from);
-    // Move two pixels above
-    P = Point(x+2,y+2);
 }
 // Returns a vector with the points of the segment between P and Q
 segment line(const Point& P, const Point& Q){
@@ -346,7 +243,27 @@ segment line(const Point& P, const Point& Q){
 void plot_line(pngwriter& image, const Point& A, const Point& B, const vector<double>& color){
     for (Point P : line(A, B)) image.plot(P.X(), P.Y(), color[0], color[1], color[2]);
 }
-
+// Rescale and center the image
+void adjust(Point& P, Point new_Origin, double width_to, double height_to, double width_from, double height_from){
+    // Change the origin
+    P -= new_Origin;
+    // Scale
+    double x = P.X(); double y = P.Y();
+    double factor;
+    Point center;
+    if (height_from > width_from) {
+        factor = height_to/height_from;
+        center = Point((WIDTH-1)/2 - (width_from*factor/2), 0);
+    }else {
+        factor = width_to/width_from;
+        center = Point(0, (HEIGHT-1)/2 - (height_from*factor/2));
+    }
+    x *= factor; y *= factor;
+    // Move two pixels above
+    P = Point(x+2,y+2);
+    // Center the image
+    P += center;
+}
 void plot(pngwriter& image, const vector<ConvexPolygon>& polygons){
     ConvexPolygon box = ConvexPolygon().bbox(polygons);
     // I'm taking into account that the first Point can either be the LL or the UL
@@ -357,19 +274,21 @@ void plot(pngwriter& image, const vector<ConvexPolygon>& polygons){
     double max_y = rectangle[3].Y();
 
     double width_from = max_x - min_x;
-    double heigth_from = max_y - min_y;
+    double height_from = max_y - min_y;
 
     vector<double> color(3);
+    // Draw each polygon separately;
     for (const ConvexPolygon& T : polygons){
         color = T.getcol();
         vector<Point> hull = T.Hull();
+        // Draw each line separately
         for (int i = 0; i < hull.size(); i++) {
             Point A = hull[i];
             Point B;
             if (i == hull.size()-1) B = hull[0]; // The polygon is closed
             else B = hull[i+1];
-            adjust(A, Point(min_x, min_y), 497, 497, width_from, heigth_from);
-            adjust(B, Point(min_x, min_y), 497, 497, width_from, heigth_from);
+            adjust(A, Point(min_x, min_y), WIDTH - 3, HEIGHT - 3, width_from, height_from);
+            adjust(B, Point(min_x, min_y), WIDTH - 3, HEIGHT - 3, width_from, height_from);
             plot_line(image, A, B, color);
         }
     }
@@ -377,19 +296,13 @@ void plot(pngwriter& image, const vector<ConvexPolygon>& polygons){
 
 void draw(){
     string file;
-    if (not (iss >> file)){
-        error(0);
-        return;
-    }
-    if (wrong_format(file, true)){
-        error(4);
-        return;
-    }
+    if (not (iss >> file)) {error(0); return;}
+    if (wrong_format(file, true)) {error(4); return;}
     // PNGwriter compatibility with strings
     char file_c[file.size()];
     strcpy(file_c, file.c_str());
 
-    pngwriter image(500, 500, 1.0, file_c);
+    pngwriter image(WIDTH, HEIGHT, 1.0, file_c);
     string name;
     vector<ConvexPolygon> polygons;
     while (iss >> name){
@@ -402,6 +315,12 @@ void draw(){
     }
     plot(image, polygons);
     image.close();
+    cout << "ok" << endl;
+}
+void frame(){
+    int new_width = WIDTH; int new_height = HEIGHT;
+    if (not (iss >> new_width >> new_height)) {error(0); return;}
+    WIDTH = new_width; HEIGHT = new_height;
     cout << "ok" << endl;
 }
 
@@ -417,6 +336,7 @@ void execute(const string& line){
     else if (inst == "save") save();
     else if (inst == "load") load();
     else if (inst == "draw") draw();
+    else if (inst == "frame") frame();
     // Retrieve information
     else if (inst == "area") area();
     else if (inst == "perimeter") perimeter();

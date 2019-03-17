@@ -48,6 +48,9 @@ class Point{
         // Prec: Neither P1 nor P2 are the origin
         bool clockwise (const Point& P1, const Point& P2) const;
         bool clockwise (const Point& P) const;
+        // Tells if it is inside the segment AB
+        // Prec: the point lies in the line AB
+        bool isInside(const Point& A, const Point& B) const;
 
     private:
         double x, y;

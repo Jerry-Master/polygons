@@ -84,3 +84,6 @@ bool Point::clockwise (const Point& P1, const Point& P2) const{
 bool Point::clockwise (const Point& P) const{
     return clockwise(*this, P) > 0;
 }
+bool Point::isInside (const Point& A, const Point& B) const{
+    return  A.distance(B) > (distance(A) + distance(B)) - 1e-4*A.distance(B);
+}

@@ -3,43 +3,8 @@
 #include <algorithm>
 #include <fstream>
 #include <string>
+#include "Point.h"
 using namespace std;
-
-std::vector<int> genera(){
-    std::vector<int> v = {100,2,3,2,1,3,4,4,2,1,2,4,43,2,12,34,3,5323,235,35};
-    return v;
-}
-
-void print(const std::vector<int>& v){
-    int i = 0;
-    for (int p : v) {
-        std::cout << p << ' ';
-        i++;
-        if (i == 2) return;
-    }
-    std::cout << std::endl;
-}
-
-bool comp (int a, int b){
-    return a < b;
-}
-
-std::vector<int> nothing(std::vector<int>& v){
-    v.pop_back();
-    return v;
-}
-
-/**
-    std::vector<int> v = genera();
-    std::vector<int> b = nothing(v);
-    print(b);
-    std::sort(++v.begin(), v.end(), comp);
-    print(v);
-    ifstream f("prueba.txt");
-    string line;
-    getline(f, line);
-    cout << line << endl;
-*/
 
 bool wrong_format(const string& file, bool image = false){
     int last = file.size()-1;
@@ -49,9 +14,33 @@ bool wrong_format(const string& file, bool image = false){
     if (image) return (tail != ".png");
     return (tail == ".txt" or tail == ".inp" or tail == ".dat");
 }
+void check_inside(std::vector<Point>& V, const Point& A, const Point& B) {
+    if (V.size() == 0) return;
+    if (V.size() == 1) if (V[0].isInside(A, B)) return;
+    bool a_inside = A.isInside(V[0], V[1]);
+    cout << a_inside << endl;
+    bool b_inside = B.isInside(V[0], V[1]);
+    cout << b_inside << endl;
+    if (a_inside and b_inside) V = {A, B};
+    else if (a_inside) {
+        if (V[0].isInside(B, V[1])) V[1] = A;
+        else V[0] = A;
+    }else {
+        if (V[0].isInside(A, V[1])) V[1] = B;
+        else V[0] = B;
+    }
+}
 
 int main(){
-    double x, y;
-    if (cin >> x >> y) cout << "good" << endl;
-    else cout << "bad" << endl;
+    Point A(0.0,0.0);
+    Point B(2.0,0.0);
+    Point C(1.0,0.0);
+    Point D(-1.0,0.0);
+    cout << A.isInside(B, C) << endl;
+    vector<Point> V = {A,B};
+    check_inside(V, C, D);
+    Point E = V[0];
+    Point F = V[1];
+    cout << E.X() << "," << E.Y() << endl;
+    cout << F.X() << "," << F.Y() << endl;
 }

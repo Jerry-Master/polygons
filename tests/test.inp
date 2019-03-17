@@ -1,1 +1,23 @@
-
+polygon p1 -2.06 2.23   -3.74 1.67   -2.16 -2.59   1.32 1.49   -1.54 1.07   -2.28 0.63   -0.82 0.63   -1 -1   -1.52 -0.59   -1 2   0.6 0.43   -2.96 -0.23   -4.54 -1.17   0.72 -1.79   -0.5 2.63   -2.8 3.35
+print p1
+vertices p1
+area p1
+polygon p2 -2.77 -1.26
+polygon p3 -4.36 -3.46
+inside p2 p1
+inside p3 p1
+polygon p4 -0.9385 -2.5511   -0.0511 -4.5283   2.1049 -4.7483   3.3735 -2.9912   2.486 -1.014   0.33 -0.794
+union p5 p1 p4
+print p5
+area p4
+# Artistic view
+setcol p1 0 0.5 1
+setcol p4 1 1 0 
+# Check the intersection
+polygon I1 -2.222 4.508  -5.764 1.736  -6.028 -2.466  -2.992 -6.47  1.738 -6.8  4.818 -3.126  4.796 1.45  1.474 4.86
+polygon I2 0.294 5.252  3.902 2.785  5.068 -1.659  3.572 -5.352  -4.92 -5.286  -4.986 2.766
+intersection I I1 I2
+setcol I1 0 1 0
+setcol I2 0 1 1
+draw test.png p1 p4 I1 I2
+print I

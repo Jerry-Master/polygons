@@ -21,6 +21,7 @@ The information provided is divided into seven sections:
 * **Clockwise**: Tells if the angle of rotation from one point to another is positive. **_Observe I'm calling clockwise what caucasian people call counterclockwise_**, try not to be confused. From now on, the terminology will be mathematical:
   - Positive sense of rotation
   - Negative sense of rotation
+* **isInside**: Tells if the point is inside two given points. With an uncertainty of 0.01%.
 
 ### Operations
  Each operation can be interpreted as done to the point P(x,y) or to the vector OP. The available operations are the following:
@@ -51,11 +52,11 @@ The information provided is divided into seven sections:
 
 ### Public Methods and Operators
 * **Intersection**: Represented by *. Returns the intersection of two convex polygons.
-  - Cost: `O(n log(m))`
+  - Cost: `O((m+n)log(m+n))`
   - Algorithm  
-   For each side compute the cross points of the other polygon with the line it represents.  
-   Then, from the cross points and the vertices select the two that are contained by the other two.  
-   Finally, add all the points created in this process.
+   Compute the intersection points of both polygons  
+   Compute the vertices of each polygon that are inside the other polygon  
+   Call the constructor on those points.
 * **Union**: Represented by +. Returns the convex union of two convex polygons.
   - Cost: `O((m+n)log(m+n))`
   - Algorithm  
@@ -73,7 +74,7 @@ The information provided is divided into seven sections:
 * **num_vert**: Returns the number of vertices.
 * **num_edges**: Returns the number of edges.
 * **area / perimeter / centroid**: Returns the area / perimeter / centroid.
-* **isRegular**: Tells if a polygon is regular.
+* **isRegular**: Tells if a polygon is regular. With an uncertainty of 1%.
   - Cost: `O(n)`
   - Algorithm  
    First, check if all the edges are equal.   
@@ -110,11 +111,15 @@ All of the above is done using this functions:
       2. The point is at the left, so forget about the first n/2 points.  
       
     Finally, apply recursion over the remaining n/2 points.
+* **Interior Points(second version)**: Tells which points of a polygon are inside another polygon.
+  - Cost: `O(n log(m))`
+  - Algorithm  
+    Just apply the function above for every point.
 * **Intersection line-polygon**: Computes the point(s) in which a line intersects a polygon. This one is a bit extense, the first part is an sketch, and the second is in detail.
   - Cost: `O(log(n))`
   - Algorithm  
-    Base case: The polygon is a dygon, so the intersection can be done analytically.  
-    Case n: We need to find two consecutive points, that are one at each side of the line, or are the two nearest ones. In order to do that, again use divide & conquer to reduce the problem to one of size n/2.
+    Base case: The polygon is a dygon, so the intersection can be done analytically using Cramer's rule.  
+    Case n: We need to find two consecutive points, one at each side of the line. In order to do that, again use divide & conquer to reduce the problem to one of size n/2.
       
     > `cut_points(P, Q, polygon T, i, j)`
     
@@ -131,9 +136,11 @@ This are the ones given by [Jordi Petit](https://github.com/jordi-petit/ap2-poli
 > 
 > `area` `perimeter` `vertices` `centroid` 
 > 
-> `setcol` `draw`
+> `setcol` `draw` `frame`
 > 
-> `intersection` `union` `inside` `bbox`
+> `intersection` `union` `inside` `bbox`  
+
+I added the command `frame`, to include the possibility to renderize an image with more resolution. But keep in mind that a frame bigger than 5000 x 5000 will be pretty slow.
 
 ### Error handling
 The possible errors are encoded with a number from 0 to 4. If one appears, something has gone wrong and isn't working as you would expect, the command won't terminate but maybe it will have done something you don't really want, so it is adviceable to restart the calculator.
@@ -199,6 +206,8 @@ The command `make` shows all the available commands, which are:
 * **clean**: Removes all the `.o`, `.exe`, and `.out` files.
 ***
 ## 7. Additional notes and Clarifications
+### Uncertainties
+In many functions the uncertainty imposed by Jordi Petit is too low. I decided to change it to one a bit more flexible. My uncertainties are measured in percentages, this means the margin depends on the magnitude of the value. This way, for bigger numbers, there is a bigger absolute margin, and smaller for small values. This method is similar to the one physics use, and it is because is more trustful.
 ### Why the clockwise() method seems counterclockwise?
 Because this is the way things should be. Having our clocks move in the negative sense of rotation while the times moves forward is absurd. But, the occidental culture is built upon history, not science and math. That is why you think my function clockwise has the wrong name. To support that this view is not unique, follow this [link](https://www.bbc.com/mundo/noticias/2014/06/140625_bolivia_nuevo_reloj_izquierda_men).
 ### Notation in the algorithm explanation

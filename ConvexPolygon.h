@@ -4,6 +4,7 @@
 #include "Point.h"
 #include <vector>
 #include <algorithm>
+using namespace std;
 
 /**
 To clarify things, in the followings n = hull.size() and m = T.size()
@@ -17,21 +18,15 @@ class ConvexPolygon{
     public:
         // Constructor
         ConvexPolygon& operator= (const ConvexPolygon& T); // Check
-        ConvexPolygon& operator= (const std::vector<Point>& T); // Check
-        ConvexPolygon (const std::vector<Point>& T); // Check
+        ConvexPolygon& operator= (const vector<Point>& T); // Check
+        ConvexPolygon (const vector<Point>& T); // Check
         ConvexPolygon (); // Check
         // Changes the color
-        void setcol (const std::vector<double> new_color);
-        std::vector<double> getcol () const;
-
-        /**
-            Both the intersection and the union doesn't change the father polygon,
-            but they return a reference to the polygon created in order to be able 
-            to concatenate operations
-        */
+        void setcol (const vector<double> new_color);
+        vector<double> getcol () const;
 
         // Intersection 
-        // Cost: O(n^2)
+        // Cost: O(n log(m))
         ConvexPolygon operator* (const ConvexPolygon& T) const;
         // Union
         // Cost: O((m+n)log(m+n))
@@ -39,7 +34,7 @@ class ConvexPolygon{
 
         // Smallest Bounding Box that contains the elements
         // Cost: O(n), n = total number of vertices
-        ConvexPolygon bbox (const std::vector<ConvexPolygon>& V) const; // Check?
+        ConvexPolygon bbox (const vector<ConvexPolygon>& V) const; // Check
         // Tells if this polygon is inside the polygon T
         // Cost: O(n log(m)) 
         bool isInside (const ConvexPolygon& T) const; // Check
@@ -59,7 +54,7 @@ class ConvexPolygon{
         // Cost: O(n) additions
         Point centroid () const; // Check
         // Returns the set of all vertices
-        std::vector<Point> Hull () const; // Check
+        vector<Point> Hull () const; // Check
 
     private:
         /** 
@@ -68,34 +63,39 @@ class ConvexPolygon{
         We can consider hull.size() == 0 and -1 == hull.size() - 1
         And hull[0] has the lowest x-coordinate
         */
-        std::vector<Point> hull;
-        std::vector<double> color = {0.0, 0.0, 0.0}; // Default is black
+        vector<Point> hull;
+        vector<double> color = {0.0, 0.0, 0.0}; // Default is black
 
         //Useful methods either for constructor or other public methods
         
         // Returns the index/coordinate of the point with the minimum/maximum x/y-coordinate 
         // Cost: O(n)
-        int min_x (const std::vector<Point>& P) const; // Check
-        int min_y (const std::vector<Point>& P) const; // Check
-        int max_x (const std::vector<Point>& P) const; // Check
-        int max_y (const std::vector<Point>& P) const; // Check
+        int min_x (const vector<Point>& P) const; // Check
+        int min_y (const vector<Point>& P) const; // Check
+        int max_x (const vector<Point>& P) const; // Check
+        int max_y (const vector<Point>& P) const; // Check
         // For the Bounding Box function
-        double min_x_value (const std::vector<Point>& P) const; // Check
-        double min_y_value (const std::vector<Point>& P) const; // Check  
-        double max_x_value (const std::vector<Point>& P) const; // Check
-        double max_y_value (const std::vector<Point>& P) const; // Check
+        double min_x_value (const vector<Point>& P) const; // Check
+        double min_y_value (const vector<Point>& P) const; // Check  
+        double max_x_value (const vector<Point>& P) const; // Check
+        double max_y_value (const vector<Point>& P) const; // Check
         //Cost: O(n log(n))
-        std::vector<Point> simple_polygon (const std::vector<Point>& T) const; // Check
-        // Cost: O(n + m), for the union
-        std::vector<Point> simple_polygon (const ConvexPolygon& T1, const ConvexPolygon& T2) const;
+        vector<Point> simple_polygon (const vector<Point>& T) const; // Check
         // Cost: O(n)
-        std::vector<Point> graham_scan (const std::vector<Point>& T) const; // Check
+        vector<Point> graham_scan (const vector<Point>& T) const; // Check
         // Cost: O(n log(n)), it is simple_polygon + graham_scan
-        std::vector<Point> convexHull (const std::vector<Point>& T) const; // Check
+        vector<Point> convexHull (const vector<Point>& T) const; // Check
         // Cost: O(log(n))
-        bool isInside (const std::vector<Point>& T, const Point& P) const; // Check
-        // Returns the points of this inside this, and the index of the beginning and ending in i and j
-        std::vector<Point> pointsInside(const std::vector<Point>& T, int i, int j) const;
+        bool isInside (const vector<Point>& T, int i1, int i2, const Point& P) const;
+        bool isInside (const vector<Point>& T, const Point& P) const; // Check
+        // Utilities for intersection
+        void check_inside(vector<Point>& V, const Point& A, const Point& B) const;
+        // Returns interior points of T1 in T2 and viceversa
+        vector<Point> interiorPoints(const vector<Point>& T1, const vector<Point>& T2) const;
+        // Necessary functions for the intersection
+        vector<Point> cut_points(const Point& A, const Point& B, const vector<Point>& T) const;
+        vector<Point> cut_points(const Point& A, const Point& B, const vector<Point>& T, int i, int j) const;
+        vector<Point> cut_points(const vector<Point>& T1, const vector<Point>& T2) const;
 };
 
 #endif
