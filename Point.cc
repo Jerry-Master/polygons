@@ -1,4 +1,5 @@
 #include "Point.h"
+using namespace std;
 
 // Constructor
 Point& Point::operator= (const Point& P){
