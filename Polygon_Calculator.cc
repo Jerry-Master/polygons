@@ -173,7 +173,7 @@ void setcol(){
 // Supported text formats are .txt, .inp, .dat, and for image just .png
 bool wrong_format(const string& file, bool image = false){
     int last = file.size()-1;
-    if (last < 3) return false;
+    if (last < 3) return true;
     string tail = file.substr(last-3, 4);
     if (image) return (tail != ".png");
     // text formats
