@@ -25,8 +25,8 @@ test: Polygon_Calculator.exe
 	diff test.out test.txt 
 
 # Check if it is efficient
-test_time: Polygon_Calculator.exe
-	@cd tests; ../Polygon_Calculator.exe < test_time.inp > test_time.out; \
+test_time: test_time.exe
+	@cd tests; ../test_time.exe > test_time.out; \
 	more test_time.out
 
 # Check if Point/ConvexPolygon is well-implemented
@@ -54,6 +54,8 @@ test_point.exe: Point.o test_point.o
 	@cd tests; $(CXX) $(CXXFLAGS) -o $@ ../Point.o test_point.o
 test_conv.exe: Point.o ConvexPolygon.o test_conv.o
 	@cd tests; $(CXX) $(CXXFLAGS) -o $@ ../Point.o ../ConvexPolygon.o test_conv.o
+test_time.exe: Point.o ConvexPolygon.o test_time.o
+	@cd tests; $(CXX) $(CXXFLAGS) -o $@ ../Point.o ../ConvexPolygon.o test_time.o
 
 
 # All the needed linkers
@@ -62,7 +64,9 @@ test_point.o:
 	@cd tests; $(CXX) $(CXXFLAGS) -c test_point.cc 
 ConvexPolygon.o: ConvexPolygon.cc 
 test_conv.o: 
-	@cd tests; $(CXX) $(CXXFLAGS) -c test_conv.cc 
+	@cd tests; $(CXX) $(CXXFLAGS) -c test_conv.cc
+test_time.o: 
+	@cd tests; $(CXX) $(CXXFLAGS) -c test_time.cc 
 Polygon_Calculator.o: Polygon_Calculator.cc 
 
 # Removes .exe, .o and .out files
