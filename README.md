@@ -24,7 +24,7 @@ The information provided is divided into seven sections:
 ![Example][clockwise]
 * **isInside**: Tells if the point is inside two given points. With an uncertainty of 0.01%.
 
-[clockwise]: clockwise.png
+[clockwise]: clockwise.png =175x150
 
 ### Operations
  Each operation can be interpreted as done to the point P(x,y) or to the vector OP. The available operations are the following:
