@@ -1,4 +1,4 @@
-# Flags for compiling with C++.
+# Flags for compiling with C++.  
 CXXFLAGS = -Wall -std=c++11 -O2 -DNO_FREETYPE -I $(HOME)/libs/include
 LIBS =  -L $(HOME)/libs/lib -l PNGwriter -l png
 

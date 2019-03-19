@@ -39,7 +39,7 @@ void warning(int type){
     cout << endl;
 }
 
-void add_polygon(bool message = true){
+void add_polygon(bool meissage = true){
     string name;
     if (not (iss >> name)) {error(0); return;}
     // Add the points
@@ -50,7 +50,7 @@ void add_polygon(bool message = true){
         hull.push_back(Point(x,y));
     }
     pols[name] = hull;
-    if (message) cout << "ok" << endl;
+    if (meissage) cout << "ok" << endl;
 }
 // Shows all the vertices of T in order, in the form x1 y1 x2 y2  
 void print(const string& name){
@@ -104,7 +104,7 @@ void bbox(){
     while (iss >> name) {
         enough_arguments = true;
         if (not included(name)) {error(1); return;}
-        if (box.Hull().size() == 0) box = pols[name];
+        if ((int)box.Hull().size() == 0) box = pols[name];
         else box = ConvexPolygon().bbox({box, pols[name]});
     }
     if (not enough_arguments) {error(2); return;}
@@ -204,7 +204,8 @@ void load(){
     ifstream arrival(file);
     string polygon;
     while(getline(arrival, polygon)) {
-        iss = istringstream(polygon);
+		iss.clear();
+        iss.str(polygon);
         add_polygon(false);
     }
     cout << "ok" << endl;
@@ -282,10 +283,10 @@ void plot(pngwriter& image, const vector<ConvexPolygon>& polygons){
         color = T.getcol();
         vector<Point> hull = T.Hull();
         // Draw each line separately
-        for (int i = 0; i < hull.size(); i++) {
+        for (int i = 0; i < (int)hull.size(); i++) {
             Point A = hull[i];
             Point B;
-            if (i == hull.size()-1) B = hull[0]; // The polygon is closed
+            if (i == (int)hull.size()-1) B = hull[0]; // The polygon is closed
             else B = hull[i+1];
             adjust(A, Point(min_x, min_y), WIDTH - 3, HEIGHT - 3, width_from, height_from);
             adjust(B, Point(min_x, min_y), WIDTH - 3, HEIGHT - 3, width_from, height_from);
@@ -299,7 +300,7 @@ void draw(){
     if (not (iss >> file)) {error(0); return;}
     if (wrong_format(file, true)) {error(4); return;}
     // PNGwriter compatibility with strings
-    char file_c[file.size()];
+    char file_c[(int)file.size()];
     strcpy(file_c, file.c_str());
 
     pngwriter image(WIDTH, HEIGHT, 1.0, file_c);
@@ -325,7 +326,8 @@ void frame(){
 }
 
 void execute(const string& line){
-    iss = istringstream(line);
+	iss.clear();
+    iss.str(line);
     string inst;
     iss >> inst;
     // Comments

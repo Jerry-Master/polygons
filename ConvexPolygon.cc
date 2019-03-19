@@ -30,7 +30,7 @@ vector<double> ConvexPolygon::getcol () const{
 // Useful information
 // Cost: O(1)
 int ConvexPolygon::num_vert () const{
-    return hull.size();
+    return (int)hull.size();
 }
 // Cost: O(1)
 int ConvexPolygon::num_edges () const{
@@ -127,60 +127,60 @@ vector<Point> ConvexPolygon::Hull () const{
 // Beginning of min / max functions
 int ConvexPolygon::min_x (const vector<Point>& P) const{
     int minimum = 0;
-    for (int i = 1; i < P.size(); i++){
+    for (int i = 1; i < (int)P.size(); i++){
         if (P[i].X() < P[minimum].X()) minimum = i;
     }
     return minimum;
 }
 int ConvexPolygon::min_y (const vector<Point>& P) const{
     int minimum = 0;
-    for (int i = 1; i < P.size(); i++){
+    for (int i = 1; i < (int)P.size(); i++){
         if (P[i].Y() < P[minimum].Y()) minimum = i;
     }
     return minimum;
 }
 int ConvexPolygon::max_x (const vector<Point>& P) const{
     int maximum = 0;
-    for (int i = 1; i < P.size(); i++){
+    for (int i = 1; i < (int)P.size(); i++){
         if (P[i].X() > P[maximum].X()) maximum = i;
     }
     return maximum;
 }
 int ConvexPolygon::max_y (const vector<Point>& P) const{
     int maximum = 0;
-    for (int i = 1; i < P.size(); i++){
+    for (int i = 1; i < (int)P.size(); i++){
         if (P[i].Y() > P[maximum].Y()) maximum = i;
     }
     return maximum;
 }
 double ConvexPolygon::min_x_value (const vector<Point>& P) const{
-    if (P.size() == 0) return 0;
+    if ((int)P.size() == 0) return 0;
     int minimum = 0;
-    for (int i = 1; i < P.size(); i++){
+    for (int i = 1; i < (int)P.size(); i++){
         if (P[i].X() < P[minimum].X()) minimum = i;
     }
     return P[minimum].X();
 }
 double ConvexPolygon::min_y_value (const vector<Point>& P) const{
-    if (P.size() == 0) return 0;
+    if ((int)P.size() == 0) return 0;
     int minimum = 0;
-    for (int i = 1; i < P.size(); i++){
+    for (int i = 1; i < (int)P.size(); i++){
         if (P[i].Y() < P[minimum].Y()) minimum = i;
     }
     return P[minimum].Y();
 }
 double ConvexPolygon::max_x_value (const vector<Point>& P) const{
-    if (P.size() == 0) return 0;
+    if ((int)P.size() == 0) return 0;
     int maximum = 0;
-    for (int i = 1; i < P.size(); i++){
+    for (int i = 1; i < (int)P.size(); i++){
         if (P[i].X() > P[maximum].X()) maximum = i;
     }
     return P[maximum].X();
 }
 double ConvexPolygon::max_y_value (const vector<Point>& P) const{
-    if (P.size() == 0) return 0;
+    if ((int)P.size() == 0) return 0;
     int maximum = 0;
-    for (int i = 1; i < P.size(); i++){
+    for (int i = 1; i < (int)P.size(); i++){
         if (P[i].Y() > P[maximum].Y()) maximum = i;
     }
     return P[maximum].Y();
@@ -222,7 +222,7 @@ static void move(vector<Point>& Polygon, const Point& Origin){
 // Returns a simple polygon (no intersections) for a given set of points
 vector<Point> ConvexPolygon::simple_polygon (const vector<Point>& T) const{
     // Special cases
-    if (T.size() < 2) return T;
+    if ((int)T.size() < 2) return T;
     // Initialize
     vector<Point> result = T;
     // Find starting point
@@ -239,14 +239,14 @@ vector<Point> ConvexPolygon::simple_polygon (const vector<Point>& T) const{
 
 vector<Point> ConvexPolygon::graham_scan (const vector<Point>& T) const{
     // Special cases
-    if (T.size() < 4) return T;
+    if ((int)T.size() < 4) return T;
     // Initialize
     vector<Point> convexHull = {T[0]};
     // Traverse all points
-    for (int i = 1; i < T.size(); i++){
+    for (int i = 1; i < (int)T.size(); i++){
         int ii = convexHull.size()-1; // Index of last point added
         // Remove the internal points 
-        while (convexHull.size() > 1 and 
+        while ((int)convexHull.size() > 1 and 
             not( (convexHull[ii]-convexHull[ii-1]).clockwise(T[i]-convexHull[ii]) )) { 
                 convexHull.pop_back();
                 ii = convexHull.size()-1;
@@ -293,8 +293,8 @@ bool ConvexPolygon::isInside (const vector<Point>& T, int i, int j, const Point&
 }
 // Tells if P is inside T
 bool ConvexPolygon::isInside (const vector<Point>& T, const Point& P) const{
-    if (T.size() < 3) return false;
-    return isInside(T,1,T.size()-1,P);
+    if ((int)T.size() < 3) return false;
+    return isInside(T,1,(int)T.size()-1,P);
 }
 // Tells if this polygon is inside T
 bool ConvexPolygon::isInside (const ConvexPolygon& T) const{
