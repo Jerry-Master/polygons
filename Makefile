@@ -26,7 +26,7 @@ test: Polygon_Calculator.exe
 
 # Check if it is efficient
 test_time: test_time.exe
-	@cd tests; ../test_time.exe > test_time.out; \
+	@cd tests; ./test_time.exe > test_time.out; \
 	more test_time.out
 
 # Check if Point/ConvexPolygon is well-implemented

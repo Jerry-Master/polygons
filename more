@@ -1,2 +1,0 @@
-g++ -Wall -std=c++11 -O2 -DNO_FREETYPE -I /home2/users/alumnes/1240254/libs/include   -c -o Polygon_Calculator.o Polygon_Calculator.cc
-<builtin>: recipe for target 'Polygon_Calculator.o' failed

@@ -94,7 +94,7 @@ static bool angleRegular (const vector<Point>& hull){
     for (int i = 1; i < n - 1; i++){
         this_angle = (hull[i+2] - hull[i+1]) * (hull[i+1] - hull[i]);  
         if (abs(last_angle - this_angle) > margin*(last_angle*this_angle/2)) return false;
-        last_angle = this_angle;
+        last_angle = this_angle; 
     }
     // Next to last angle
     this_angle = (hull[0] - hull[n]) * (hull[n] - hull[n-1]);

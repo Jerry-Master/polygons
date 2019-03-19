@@ -264,7 +264,7 @@ void adjust(Point& P, Point new_Origin, double width_to, double height_to, doubl
     P = Point(x+2,y+2);
     // Center the image
     P += center;
-}
+}  
 void plot_point(const Point& A, pngwriter& image, const vector<double>& color){
     image.filledcircle(A.X(), A.Y(), (WIDTH+HEIGHT)/200, color[0], color[1], color[2]);
 }
