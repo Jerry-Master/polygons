@@ -18,10 +18,13 @@ The information provided is divided into seven sections:
 * **Slope**
 * **Quadrant**: Tells in which quadrant you are (1,2,3,4) or 5 if you are in the axis.
 * **Distance**: Returns the distance to some point.
-* **Clockwise**: Tells if the angle of rotation from one point to another is positive. **_Observe I'm calling clockwise what caucasian people call counterclockwise_**, try not to be confused. From now on, the terminology will be mathematical:
+* **Clockwise**: Tells if the angle of rotation from one point to another is positive. **_Observe I'm calling clockwise what caucasian people call counterclockwise_**, try not to be confused. From now on, the terminology will be mathematical:  
   - Positive sense of rotation
-  - Negative sense of rotation
+  - Negative sense of rotation  
+[Example][clockwise]
 * **isInside**: Tells if the point is inside two given points. With an uncertainty of 0.01%.
+
+[clockwise]: clockwise.png
 
 ### Operations
  Each operation can be interpreted as done to the point P(x,y) or to the vector OP. The available operations are the following:
