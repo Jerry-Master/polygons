@@ -79,6 +79,9 @@ double Point::operator* (const Point& P) const{
 bool Point::operator== (const Point& P) const{
     return x == P.X() and y == P.Y();
 }
+bool Point::operator!= (const Point& P) const{
+    return not (*this == P);
+}
 bool Point::clockwise (const Point& P1, const Point& P2) const{
     return (P1 ^ P2) > 0;
 }
