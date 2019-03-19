@@ -265,6 +265,9 @@ void adjust(Point& P, Point new_Origin, double width_to, double height_to, doubl
     // Center the image
     P += center;
 }
+void plot_point(const Point& A, pngwriter& image, const vector<double>& color){
+    image.filledcircle(A.X(), A.Y(), (WIDTH+HEIGHT)/200, color[0], color[1], color[2]);
+}
 void plot(pngwriter& image, const vector<ConvexPolygon>& polygons){
     ConvexPolygon box = ConvexPolygon().bbox(polygons);
     // I'm taking into account that the first Point can either be the LL or the UL
@@ -291,6 +294,7 @@ void plot(pngwriter& image, const vector<ConvexPolygon>& polygons){
             adjust(A, Point(min_x, min_y), WIDTH - 3, HEIGHT - 3, width_from, height_from);
             adjust(B, Point(min_x, min_y), WIDTH - 3, HEIGHT - 3, width_from, height_from);
             plot_line(image, A, B, color);
+            plot_point(A, image, color);
         }
     }
 }
