@@ -21,7 +21,7 @@ The information provided is divided into seven sections:
 * **Clockwise**: Tells if the angle of rotation from one point to another is positive. **_Observe I'm calling clockwise what caucasian people call counterclockwise_**, try not to be confused. From now on, the terminology will be mathematical:  
   - Positive sense of rotation
   - Negative sense of rotation  
-[Example][clockwise]
+![Example][clockwise]
 * **isInside**: Tells if the point is inside two given points. With an uncertainty of 0.01%.
 
 [clockwise]: clockwise.png
