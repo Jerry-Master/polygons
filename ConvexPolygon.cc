@@ -213,11 +213,21 @@ ConvexPolygon ConvexPolygon::bbox (const vector<ConvexPolygon>& V) const{
 */
 
 static bool angle_sorting (const Point& P1, const Point& P2){
+    if (P1 == Point(0,0) and P1 != P2) return true;
     return P1.slope() < P2.slope();
 }
 // Changes the frame of reference of the points making the point Origin the new origin
 static void move(vector<Point>& Polygon, const Point& Origin){
     for (Point& P : Polygon) P -= Origin; 
+}
+// Removes equal elements
+// Prec: It is sorted
+static void clean(vector<Point>& T){
+    vector<Point> aux = {T[0]};
+    for (int i = 1; i < (int)T.size(); i++){
+        if (T[i] != T[i-1]) aux.push_back(T[i]);
+    }
+    T = aux;
 }
 // Returns a simple polygon (no intersections) for a given set of points
 vector<Point> ConvexPolygon::simple_polygon (const vector<Point>& T) const{
@@ -232,6 +242,7 @@ vector<Point> ConvexPolygon::simple_polygon (const vector<Point>& T) const{
     Point Origin = result[0];
     move(result, Origin);
     sort(++result.begin(), result.end(), angle_sorting);
+    clean(result);
     move(result, -Origin);
 
     return result;
@@ -254,6 +265,15 @@ vector<Point> ConvexPolygon::graham_scan (const vector<Point>& T) const{
         // Add the next point
         convexHull.push_back(T[i]);
     }
+    // Repeat one extra step to solve special case
+    int ii = convexHull.size()-1; // Index of last point added
+    // Remove the internal points 
+    while ((int)convexHull.size() > 1 and 
+        not( (convexHull[ii]-convexHull[ii-1]).clockwise(T[0]-convexHull[ii]) )) { 
+            convexHull.pop_back();
+            ii = convexHull.size()-1;
+        }
+
     return convexHull;
 }
 
