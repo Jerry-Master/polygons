@@ -24,8 +24,6 @@ The information provided is divided into seven sections:
 ![Example][clockwise]
 * **isInside**: Tells if the point is inside two given points. With an uncertainty of 0.01%.
 
-[clockwise]: clockwise.png =175x150
-
 ### Operations
  Each operation can be interpreted as done to the point P(x,y) or to the vector OP. The available operations are the following:
 * **Addition**: Represented with + or +=.
@@ -41,9 +39,9 @@ The information provided is divided into seven sections:
 
 ### Attributes
 1. **Hull**: It is a vector of the consecutive points of the convex hull starting at the left-most one and going in the positive direction of rotation.  
- It can be retrieved with Hull() method.
+ It can be retrieved with Hull() method.  
 
- [Example][polygon]
+ ![Example][polygon]
 2. **Color**: A vector with three doubles representing the colors Red, Green, and Blue. With values from 0 to 1.  
  It can be retrieved with the getcol() method.
 
@@ -59,11 +57,13 @@ The information provided is divided into seven sections:
   - Algorithm  
    Compute the intersection points of both polygons  
    Compute the vertices of each polygon that are inside the other polygon  
-   Call the constructor on those points.
+   Call the constructor on those points.  
+   ![Example][Intersection]
 * **Union**: Represented by +. Returns the convex union of two convex polygons.
   - Cost: `O((m+n)log(m+n))`
   - Algorithm  
    Just call the constructor of the class with all the points.
+   ![Example][Union]
 * **Bounding Box(bbox)**: Returns a rectangle (convex polygon) that contains all the given convex polygons.
   - Cost: `O(n)`
   - Algorithm  
@@ -130,7 +130,8 @@ All of the above is done using this functions:
     
     Inductive step: Let `m = (i+j)/2`, then either call the function between `[i..m]` or between `[m..j]`. Following a different criteria for each case:
     1. `T[i]` is in a different side of the line than `T[j]`, then `T[m]` is either in the same side as `T[i]` or as `T[j]`, therefore choose the one in the different side.
-    2. Both `T[i]` and `T[j]` are in the same side. If `T[m]` is in another side, both `[i..m]`   and `[m..j]`  are valid. Else, look at `T[m-1]` and `T[m+1]` to see in which way you are getting closer to the line and choose that way.
+    2. Both `T[i]` and `T[j]` are in the same side. If `T[m]` is in another side, both `[i..m]`   and `[m..j]`  are valid. Else, look at `T[m-1]` and `T[m+1]` to see in which way you are getting closer to the line and choose that way.  
+    ![Example][line-polygon]
 ***
 ## 3. Polygon Calculator
 
@@ -177,20 +178,24 @@ The command `make compile` will do all the work.
 > 
 > `#include <pngwriter.h>`  
 
-If this or something similar shows up, it is because either you haven`t installed the library PNGwriter, or you have it installed in another place. If you have installed it, but don't remember where, do the following to fix the problem. First, check the flags for the compiler are the correct ones:
+If this or something similar shows up, it is because either you haven`t installed the library PNGwriter, or you have installed it in another place. If you have installed it, but don't remember where, do the following to fix the problem. First, check the flags for the compiler are the correct ones:
 > `CXXFLAGS = -Wall -std=c++11 -O2 -DNO_FREETYPE -I $(HOME)/libs/include`
 > 
 >`LIBS =  -L $(HOME)/libs/lib -l PNGwriter -l png`
 
-If they already are like that, try to find the directory in which PNGwriter is installed, to do so, you can execute the following command in bash:
-> `find / -name pngwriter.h 2>/dev/null`
+If they already are like that, you'll need to find **TWO** files in your computer and their respectives directories. The first is      `  libPNGwriter.a`. To find it, use this command
+> `find / -name libPNGwriter.a 2>/dev/null`
 
-It is going to last a few minutes, because it is looking in all your directories. Whenever a directory is printed like, for example: `/Users/087024/libs/include/pngwriter.h` you can interrupt the process by doing `ctrl+c`. Now change the flags to include the above, knowing the directory in which everything is installed is `/Users/087024/libs/` (example):
->`CXXFLAGS = -Wall -std=c++11 -O2 -DNO_FREETYPE -I` _`/Users/087024/libs/include/`_
-> 
+**It is going to last a few minutes**, because it is looking in all your directories. Whenever a directory is printed like, for example: `/Users/087024/libs/lib/libPNGwriter.a` you can interrupt the process by doing `ctrl+c`. Now, next to the flag `-L` put the directory you found. In the example above it is `/Users/087024/libs/` and you should put:
 >`LIBS =  -L` _`/Users/087024/libs/lib/`_ `-l PNGwriter -l png`
 
-The cursive letters are where you have to put the new path you found. Adding `include` or `lib`.  
+The other file you need to find is `pngwriter.h`. Again use `find` to find it, like this:
+> `find / -name pngwriter.h 2>/dev/null`  
+
+The new directory you found goes with the flag `-I`. For example, if the directory is `/Users/087024/libs/include/`, you should put:
+> `CXXFLAGS = -Wall -std=c++11 -O2 -DNO_FREETYPE -I` _`/Users/087024/libs/include`_
+> 
+
 If none of this worked, reinstall the package PNGwriter in the folder `$HOME/libs` and leave the flags as they were in the beginning.
 
 If you don't know how to install PNGwriter, Jordi Petit has a fantastic tutorial in his [github](https://github.com/jordi-petit/ap2-imatges).
@@ -203,9 +208,9 @@ The command `make` shows all the available commands, which are:
 * **test_time**: Shows the time it needs to execute each method for different sizes.
 * **test_point**: Check the class Point. For more detail go to the README.md in the folder tests.
 * **test_conv**: Check the class ConvexPolygon. For more detail go to the README.md in the folder tests.
-* **open_point**: Opens the files of the tests of the class Point. Only valid for visual Studio Code.
-* **open_conv**: Opens the files of the tests of the class ConvexPolygon. Only valid for visual Studio Code.
-* **open**: Opens the files of the tests of the Polygon_Calculator. Only valid for visual Studio Code.
+* **open_point**: Opens the files of the tests of the class Point. **Only valid for visual Studio Code.** (Change `code` for `geany` if you are using Linux)
+* **open_conv**: Opens the files of the tests of the class ConvexPolygon. **Only valid for visual Studio Code.** (Change `code` for `geany` if you are using Linux)
+* **open**: Opens the files of the tests of the Polygon_Calculator. **Only valid for visual Studio Code.** (Change `code` for `geany` if you are using Linux)  
 * **clean**: Removes all the `.o`, `.exe`, and `.out` files.
 ***
 ## 7. Additional notes and Clarifications
@@ -236,3 +241,9 @@ Remember this notation: T stands for polygons or vectors of points; P, Q and oth
 The static functions are placed immediately above of where they are used. Or if they are used by many other functions they are at the top.
 
 Min/Max functions are copy-paste of the first one, so there is no need to read in detail each of one. Disgracefully, there are many function along the code that exhibits this feature, but I couldn't do better because although they are very similar, I didn't find a way to encapsulate them even more.
+
+[clockwise]: ./Images/clockwise.png
+[polygon]: ./Images/polygon.png
+[Intersection]: ./Images/Intersection.png
+[Union]: ./Images/Union.png
+[line-polygon]: ./Images/line-polygon.png
